@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+set -xe
+cargo run --bin tui

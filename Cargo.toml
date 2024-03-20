@@ -1,0 +1,30 @@
+[package]
+name = "room_rs"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bin]]
+name = "cli"
+path = "./src/cli.rs"
+
+[[bin]]
+name = "tui"
+path = "./src/tui/tui.rs"
+
+[[bin]]
+name = "gui"
+path = "./src/gui.rs"
+
+[[bin]]
+name = "server"
+path = "./src/server.rs"
+
+[dependencies]
+egui = "0.26.2"
+eframe = "0.26.2"
+serde = "1.0.197"
+
+[dependencies.crossterm]
+version = "0.27.0"
+features = ["event-stream"]
