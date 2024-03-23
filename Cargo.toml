@@ -10,7 +10,7 @@ path = "./src/cli.rs"
 
 [[bin]]
 name = "tui"
-path = "./src/tui/tui.rs"
+path = "./src/tui/main.rs"
 
 [[bin]]
 name = "gui"

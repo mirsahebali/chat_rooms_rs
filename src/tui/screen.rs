@@ -22,7 +22,6 @@ pub struct Screen<'a> {
     pub height: u16,
     pub x_border: &'a str,
     pub y_border: &'a str,
-    pub refresh: Duration,
 }
 
 impl<'a> Screen<'a> {
@@ -35,8 +34,6 @@ impl<'a> Screen<'a> {
             height,
             x_border: "━",
             y_border: "┃",
-            // Refresh rate of 30fps
-            refresh: Duration::from_millis(16),
         }
     }
     pub fn print_border(&self, mut stdout: &Stdout) -> io::Result<()> {
@@ -80,17 +77,6 @@ impl<'a> Screen<'a> {
 
         stdout.execute(MoveToNextLine(1))?;
         stdout.execute(MoveRight(2));
-        Ok(())
-    }
-    pub fn display_message_on_screen(
-        &self,
-        mut stdout: &Stdout,
-        msg: &String,
-        index: usize,
-    ) -> io::Result<()> {
-        stdout
-            .execute(MoveTo(2, self.height - (index + 5) as u16))?
-            .execute(Print(msg.to_string() + "\n"))?;
         Ok(())
     }
 }

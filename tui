@@ -1,4 +1,6 @@
 #!/bin/env bash
 
 set -xe
+
+clear
 cargo run --bin tui
