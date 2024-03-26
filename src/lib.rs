@@ -1,7 +1,7 @@
 use std::io;
 
-pub const ADDR: &str = "127.0.0.1:8000";
-
+pub const ADDR: &str = "127.0.0.1";
+pub const PORT: &str = "8000";
 pub fn accept_user_input(input_msg: &str) -> String {
     let mut buf = String::new();
     println!("{input_msg}");

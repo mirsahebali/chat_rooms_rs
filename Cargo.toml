@@ -14,7 +14,7 @@ path = "./src/tui/main.rs"
 
 [[bin]]
 name = "gui"
-path = "./src/gui.rs"
+path = "./src/gui/main.rs"
 
 [[bin]]
 name = "server"
@@ -22,7 +22,10 @@ path = "./src/server.rs"
 
 [dependencies]
 egui = "0.26.2"
-eframe = "0.26.2"
+eframe = { version = "0.26.0", default-features = false, features = [
+	"glow",        # Use the glow rendering backend. Alternative: "wgpu".
+	"persistence", # Enable restoring app state when restarting the app.
+] }
 serde = "1.0.197"
 
 [dependencies.crossterm]
