@@ -1,4 +1,6 @@
-use room_rs::{ADDR, PORT};
+#![allow(unused)]
+
+use room_rs::{Client, ADDR, PORT};
 use std::{
     env,
     io::{self, Read},
@@ -10,6 +12,7 @@ use std::{
 #[derive(Debug)]
 struct Server {
     listener: TcpListener,
+    clients: Vec<Arc<TcpStream>>,
 }
 
 impl Server {
@@ -19,9 +22,10 @@ impl Server {
             listener: TcpListener::bind(format!("{ADDR}:{port}").to_string())
                 .map_err(|err| panic!("ERROR: listening on address, {ADDR}:{port}, \n {err}"))
                 .unwrap(),
+            clients: Vec::new(),
         }
     }
-    fn start_listening(&self) -> io::Result<()> {
+    fn start_listening(&mut self) -> io::Result<()> {
         for stream in self.listener.incoming() {
             match stream {
                 Ok(stream) => {
@@ -30,6 +34,11 @@ impl Server {
                         stream.peer_addr().unwrap()
                     );
                     let stream = Arc::new(stream);
+
+                    // INFO: Clone the stream and push in the clients vector
+                    self.clients.push(stream.clone());
+
+                    // INFO: Cloning the stream for "Reading" from client
                     let stream_read = Arc::clone(&stream);
                     thread::spawn(move || loop {
                         read_from_server(&stream_read)
@@ -37,9 +46,9 @@ impl Server {
                             .unwrap();
                     });
 
-                    // let stream_write = Arc::clone(&stream);
+                    // let mut stream_write = Arc::clone(&stream);
                     // thread::spawn(move || loop {
-                    //     write_to_clients(&stream_write)
+                    //     Self::write_to_clients(&mut stream_write)
                     //         .map_err(|err| panic!("ERROR, writing to clients, {err}"))
                     //         .unwrap();
                     // });
@@ -49,6 +58,11 @@ impl Server {
                 }
             }
         }
+        Ok(())
+    }
+
+    pub fn write_to_all_clients(&mut self) -> io::Result<()> {
+        for clients in self.clients.iter_mut() {}
         Ok(())
     }
 }
@@ -70,12 +84,8 @@ fn read_from_server(mut stream: &TcpStream) -> io::Result<()> {
     Ok(())
 }
 
-fn write_to_clients(mut stream: &TcpStream) -> io::Result<()> {
-    Ok(())
-}
-
 fn main() -> io::Result<()> {
-    let server = Server::start();
+    let mut server = Server::start();
     server.start_listening()?;
     Ok(())
 }

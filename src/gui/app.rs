@@ -1,0 +1,3 @@
+struct ChatMessages {}
+
+impl ChatMessages {}
